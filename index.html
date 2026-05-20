@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>795 Test - Digital Feedback</title>
+
+    <!-- MEDALLIA SCRIPT -->
+    <script type="text/javascript" src="https://resources.digital-cloud.medallia.eu/wdceu/217941/onsite/embed.js" async></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        .back-link {
+            color: #2c3e50;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { 
+            text-decoration: underline; 
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .feedback-button {
+            display: none; 
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        .feedback-button:hover { 
+            background-color: #004494; 
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .status.loading {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status.ready {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>795 Test - Digital Feedback</h1>
+        <p>Select a survey to open:</p>
+
+        <div id="statusMessage" class="status loading">Loading Medallia SDK...</div>
+
+        <div class="button-group">
+            <button class="feedback-button" data-form-id="37663">Chubb Studio - Always-On - SG</button>
+            <button class="feedback-button" data-form-id="37662">Chubb Studio - Always-On - TH</button>
+            <button class="feedback-button" data-form-id="37661">Chubb Studio - Always-On - MY</button>
+        </div>
+        
+        <div style="margin-top: 30px; font-size: 0.85rem; color: #666;">
+            <strong>Instructions:</strong>
+            <ol style="text-align: left; display: inline-block;">
+                <li>Wait for the buttons to appear</li>
+                <li>Click on the desired survey button</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const buttons = document.querySelectorAll(".feedback-button");
+            const statusMessage = document.getElementById("statusMessage");
+            
+            let sdkReady = false;
+            
+            // Function called when SDK loads
+            function onsiteLoaded() {
+                sdkReady = true;
+                
+                // Show all buttons
+                buttons.forEach(button => {
+                    button.style.display = "block";
+                });
+                
+                statusMessage.textContent = "✓ SDK ready! Choose a survey to open.";
+                statusMessage.className = "status ready";
+            }
+            
+            // Check if SDK is already loaded
+            if (window.KAMPYLE_ONSITE_SDK) { 
+                onsiteLoaded(); 
+            } else { 
+                window.addEventListener('neb_OnsiteLoaded', onsiteLoaded);
+                
+                // Safety timeout
+                setTimeout(function() {
+                    if (!sdkReady) {
+                        statusMessage.textContent = "⚠️ SDK took too long to load. Try reloading the page.";
+                        statusMessage.className = "status error";
+                    }
+                }, 10000);
+            }
+
+            // Add click event to all buttons
+            buttons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const formId = parseInt(this.getAttribute("data-form-id"));
+                    const formName = this.textContent;
+                    
+                    if (window.KAMPYLE_ONSITE_SDK && window.KAMPYLE_ONSITE_SDK.showForm) {
+                        try {
+                            window.KAMPYLE_ONSITE_SDK.showForm(formId);
+                            statusMessage.textContent = "✓ Opening: " + formName;
+                            statusMessage.className = "status ready";
+                        } catch (error) {
+                            statusMessage.textContent = "❌ Error loading survey: " + formName;
+                            statusMessage.className = "status error";
+                        }
+                    } else {
+                        statusMessage.textContent = "❌ SDK is not ready. Please reload the page.";
+                        statusMessage.className = "status error";
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
