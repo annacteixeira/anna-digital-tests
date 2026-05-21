@@ -35,7 +35,6 @@
             overflow: hidden;
         }
 
-        /* Subtle grid background */
         body::before {
             content: '';
             position: fixed;
@@ -48,7 +47,6 @@
             z-index: 0;
         }
 
-        /* Radial glow center */
         body::after {
             content: '';
             position: fixed;
@@ -82,7 +80,6 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Lock icon */
         .icon-wrap {
             width: 52px;
             height: 52px;
@@ -187,7 +184,6 @@
             80%       { transform: translateX(4px); }
         }
 
-        /* Eye toggle */
         .toggle-eye {
             position: absolute;
             right: 14px;
@@ -286,20 +282,6 @@
             stroke-linecap: round;
             flex-shrink: 0;
         }
-
-        .divider {
-            height: 1px;
-            background: var(--border);
-            margin: 32px 0 20px;
-        }
-
-        .footer-note {
-            font-family: var(--mono);
-            font-size: 10.5px;
-            color: var(--muted);
-            text-align: center;
-            line-height: 1.7;
-        }
     </style>
 </head>
 <body>
@@ -361,7 +343,6 @@
             const pass = passInput.value;
             if (!pass) return;
 
-            // Loading state
             btn.classList.add('loading');
             btn.querySelector('.spinner').style.display = 'block';
             errorEl.classList.remove('visible');
@@ -375,6 +356,10 @@
             btn.classList.remove('loading');
 
             if (inputHash === targetHash) {
+                // ── Set auth flag before redirecting ──────────────────
+                sessionStorage.setItem('authenticated', 'true');
+                // ──────────────────────────────────────────────────────
+
                 let decryptedUrl = "";
                 for (let i = 0; i < encryptedUrl.length; i++) {
                     decryptedUrl += String.fromCharCode(encryptedUrl[i] ^ hashArray[i % hashArray.length]);
