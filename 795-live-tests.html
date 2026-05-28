@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Tests — Digital Feedback</title>
+
+    <!-- MEDALLIA SCRIPT -->
+    <script type="text/javascript" src="https://resources.digital-cloud.medallia.eu/wdceu/217941/onsite/embed.js" async></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f4f2ee;
+            --surface: #faf9f7;
+            --border: #dedad3;
+            --border-dark: #c8c3ba;
+            --text: #1a1916;
+            --muted: #8a857c;
+            --accent: #1a1916;
+            --green: #2a6b3c;
+            --green-bg: #e8f2ec;
+            --amber: #7a5c1e;
+            --amber-bg: #f5eddc;
+            --red: #7a2020;
+            --red-bg: #f5e0e0;
+            --blue: #1a3a6b;
+            --blue-bg: #e0e8f5;
+            --live: #b03a2e;
+            --live-bg: #fdecea;
+            --live-border: #f0b8b4;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'IBM Plex Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--border-dark);
+            background: var(--surface);
+            padding: 0 48px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--live);
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            transition: color 0.15s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .back-link svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Main */
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 64px 48px 80px;
+        }
+
+        /* Page header */
+        .page-header {
+            margin-bottom: 48px;
+            animation: fadeIn 0.4s ease both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            color: var(--live);
+            background: var(--live-bg);
+            border: 1px solid var(--live-border);
+            border-radius: 3px;
+            padding: 2px 8px;
+        }
+
+        .live-badge::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--live);
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+
+        h1 strong { font-weight: 600; }
+
+        .page-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        /* Live warning banner */
+        .live-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--live-bg);
+            border: 1px solid var(--live-border);
+            border-radius: 6px;
+            margin-bottom: 24px;
+            animation: fadeIn 0.4s 0.02s ease both;
+        }
+
+        .live-warning svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--live);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .live-warning-text {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--live);
+            line-height: 1.6;
+        }
+
+        .live-warning-text strong {
+            font-weight: 500;
+        }
+
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 18px;
+            border-radius: 6px;
+            font-family: var(--mono);
+            font-size: 12px;
+            margin-bottom: 32px;
+            border: 1px solid transparent;
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
+            animation: fadeIn 0.4s 0.05s ease both;
+        }
+
+        .status-bar.loading {
+            background: var(--amber-bg);
+            color: var(--amber);
+            border-color: #e8d4a8;
+        }
+
+        .status-bar.ready {
+            background: var(--green-bg);
+            color: var(--green);
+            border-color: #b8d9c4;
+        }
+
+        .status-bar.error {
+            background: var(--red-bg);
+            color: var(--red);
+            border-color: #e8b8b8;
+        }
+
+        .status-bar.info {
+            background: var(--blue-bg);
+            color: var(--blue);
+            border-color: #b8cce8;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        .status-bar.loading .status-dot {
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        /* Section label */
+        .section-label {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Survey cards */
+        .surveys-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 48px;
+        }
+
+        .survey-card {
+            background: var(--surface);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s, opacity 0.2s;
+            animation: fadeIn 0.4s ease both;
+        }
+
+        .survey-card:nth-child(1) { animation-delay: 0.08s; }
+        .survey-card:nth-child(2) { animation-delay: 0.13s; }
+        .survey-card:nth-child(3) { animation-delay: 0.18s; }
+
+        .survey-card.sdk-ready {
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        .survey-card.sdk-ready:hover {
+            border-color: var(--live);
+            box-shadow: 3px 3px 0 0 var(--live);
+            transform: translate(-1.5px, -1.5px);
+        }
+
+        .survey-card.sdk-ready:active {
+            transform: translate(0, 0);
+            box-shadow: none;
+        }
+
+        .card-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            width: 28px;
+            flex-shrink: 0;
+        }
+
+        .card-body {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .card-id {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .card-region {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: 3px;
+            background: var(--bg);
+            border: 1px solid var(--border-dark);
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .card-arrow svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.15s, transform 0.15s;
+        }
+
+        .survey-card.sdk-ready:hover .card-arrow svg {
+            stroke: var(--live);
+            transform: translate(2px, -2px);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px 24px;
+            animation: fadeIn 0.4s 0.25s ease both;
+        }
+
+        .instructions-title {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .instructions ol {
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .instructions li {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .instructions li strong {
+            color: var(--live);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <span class="logo-dot"></span>
+        INTERNAL TOOLS · LIVE
+    </div>
+    <a href="home.html" class="back-link">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        BACK TO DASHBOARD
+    </a>
+</header>
+
+<main>
+    <div class="page-header">
+        <p class="eyebrow">
+            Live Test Suite
+            <span class="live-badge">LIVE</span>
+        </p>
+        <h1>795 - Digital <strong>Feedback</strong> Surveys</h1>
+        <p class="page-desc">Medallia-powered survey forms for the live environment. These forms are active in production — responses are real. Wait for the SDK to load, then select a survey to open.</p>
+    </div>
+
+    <div class="live-warning">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <p class="live-warning-text"><strong>Live environment.</strong> These are production surveys — any form opened here will be live and visible to real users. Proceed with caution.</p>
+    </div>
+
+    <div class="status-bar loading" id="statusBar">
+        <span class="status-dot"></span>
+        <span id="statusText">Loading Medallia SDK…</span>
+    </div>
+
+    <p class="section-label">Survey forms — Chubb Studio Always-On · Live</p>
+
+    <div class="surveys-list">
+        <div class="survey-card" data-form-id="30726">
+            <span class="card-num">01</span>
+            <div class="card-body">
+                <div class="card-title">Chubb Studio — Always-On - CN</div>
+                <div class="card-id">form #30726</div>
+            </div>
+            <span class="card-region">CN</span>
+            <div class="card-arrow">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </div>
+
+        <div class="survey-card" data-form-id="30727">
+            <span class="card-num">02</span>
+            <div class="card-body">
+                <div class="card-title">Chubb Studio — Always-On - TH</div>
+                <div class="card-id">form #30727</div>
+            </div>
+            <span class="card-region">TH</span>
+            <div class="card-arrow">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </div>
+
+        <div class="survey-card" data-form-id="9575">
+            <span class="card-num">03</span>
+            <div class="card-body">
+                <div class="card-title">Chubb Studio — Always-On - SG</div>
+                <div class="card-id">form #9575</div>
+            </div>
+            <span class="card-region">SG</span>
+            <div class="card-arrow">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <p class="instructions-title">How to use</p>
+        <ol>
+            <li>Wait for the status bar above to show "SDK ready"</li>
+            <li>Click the survey you want to open</li>
+            <li>The Medallia form will appear as an overlay</li>
+            <li><strong>Remember: this is a live environment — responses are real.</strong></li>
+        </ol>
+    </div>
+</main>
+
+<script>
+    const cards = document.querySelectorAll('.survey-card');
+    const statusBar = document.getElementById('statusBar');
+    const statusText = document.getElementById('statusText');
+    let sdkReady = false;
+
+    function setStatus(type, text) {
+        statusBar.className = 'status-bar ' + type;
+        statusText.textContent = text;
+    }
+
+    function onSdkReady() {
+        sdkReady = true;
+        setStatus('ready', '✓ SDK ready — select a survey to open');
+        cards.forEach(card => card.classList.add('sdk-ready'));
+    }
+
+    if (window.KAMPYLE_ONSITE_SDK) {
+        onSdkReady();
+    } else {
+        window.addEventListener('neb_OnsiteLoaded', onSdkReady);
+        setTimeout(() => {
+            if (!sdkReady) setStatus('error', '⚠ SDK timeout — try reloading the page');
+        }, 10000);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', function () {
+            if (!this.classList.contains('sdk-ready')) return;
+            const formId = parseInt(this.getAttribute('data-form-id'));
+            const region = this.querySelector('.card-region').textContent;
+            if (window.KAMPYLE_ONSITE_SDK?.showForm) {
+                try {
+                    window.KAMPYLE_ONSITE_SDK.showForm(formId);
+                    setStatus('info', `Opening form #${formId} · ${region}`);
+                } catch (e) {
+                    setStatus('error', `Error opening form #${formId}`);
+                }
+            } else {
+                setStatus('error', 'SDK not ready — please reload');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

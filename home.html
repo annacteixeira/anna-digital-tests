@@ -24,6 +24,9 @@
             --green-bg: #e8f2ec;
             --amber: #7a5c1e;
             --amber-bg: #f5eddc;
+            --live: #b03a2e;
+            --live-bg: #fdecea;
+            --live-border: #f0b8b4;
         }
 
         body {
@@ -168,6 +171,12 @@
             box-shadow: none;
         }
 
+        /* Live card gets a red hover */
+        .tool-card.live-card:hover {
+            border-color: var(--live);
+            box-shadow: 4px 4px 0 0 var(--live);
+        }
+
         .tool-card:nth-child(1) { animation-delay: 0.05s; }
         .tool-card:nth-child(2) { animation-delay: 0.1s; }
         .tool-card:nth-child(3) { animation-delay: 0.15s; }
@@ -199,6 +208,15 @@
             stroke-linejoin: round;
         }
 
+        .live-card .card-icon {
+            background: var(--live-bg);
+            border-color: var(--live-border);
+        }
+
+        .live-card .card-icon svg {
+            stroke: var(--live);
+        }
+
         .status-badge {
             font-family: var(--mono);
             font-size: 10px;
@@ -206,6 +224,9 @@
             padding: 3px 8px;
             border-radius: 3px;
             font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .status-active {
@@ -216,6 +237,22 @@
         .status-wip {
             background: var(--amber-bg);
             color: var(--amber);
+        }
+
+        .status-live {
+            background: var(--live-bg);
+            color: var(--live);
+            border: 1px solid var(--live-border);
+        }
+
+        .status-live::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--live);
+            animation: pulse 1.4s ease-in-out infinite;
         }
 
         .card-title {
@@ -270,6 +307,10 @@
             transform: translate(2px, -2px);
         }
 
+        .live-card:hover .card-arrow svg {
+            stroke: var(--live);
+        }
+
         #timestamp {
             font-family: var(--mono);
             font-size: 11px;
@@ -319,9 +360,30 @@
                 <span class="status-badge status-active">ACTIVE</span>
             </div>
             <div class="card-title">795 Survey Tests</div>
-            <div class="card-desc">Full test suite for the 795 task.</div>
+            <div class="card-desc">Full test suite for the 795 task. Uses staging form IDs in a controlled environment.</div>
             <div class="card-footer">
                 <span class="card-meta">795-tests.html</span>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </div>
+        </a>
+
+        <a href="795-live-tests.html" class="tool-card live-card">
+            <div class="card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                </div>
+                <span class="status-badge status-live">LIVE</span>
+            </div>
+            <div class="card-title">795 Live Survey Tests</div>
+            <div class="card-desc">Production-environment surveys. Forms opened here are live. Handle with care.</div>
+            <div class="card-footer">
+                <span class="card-meta">795-live-tests.html</span>
                 <div class="card-arrow">
                     <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </div>
