@@ -27,6 +27,9 @@
             --live: #b03a2e;
             --live-bg: #fdecea;
             --live-border: #f0b8b4;
+            --uat: #4a2a7a;
+            --uat-bg: #ede8f5;
+            --uat-border: #c4b4e8;
         }
 
         body {
@@ -171,10 +174,14 @@
             box-shadow: none;
         }
 
-        /* Live card gets a red hover */
         .tool-card.live-card:hover {
             border-color: var(--live);
             box-shadow: 4px 4px 0 0 var(--live);
+        }
+
+        .tool-card.uat-card:hover {
+            border-color: var(--uat);
+            box-shadow: 4px 4px 0 0 var(--uat);
         }
 
         .tool-card:nth-child(1) { animation-delay: 0.05s; }
@@ -217,6 +224,15 @@
             stroke: var(--live);
         }
 
+        .uat-card .card-icon {
+            background: var(--uat-bg);
+            border-color: var(--uat-border);
+        }
+
+        .uat-card .card-icon svg {
+            stroke: var(--uat);
+        }
+
         .status-badge {
             font-family: var(--mono);
             font-size: 10px;
@@ -253,6 +269,12 @@
             border-radius: 50%;
             background: var(--live);
             animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        .status-uat {
+            background: var(--uat-bg);
+            color: var(--uat);
+            border: 1px solid var(--uat-border);
         }
 
         .card-title {
@@ -309,6 +331,10 @@
 
         .live-card:hover .card-arrow svg {
             stroke: var(--live);
+        }
+
+        .uat-card:hover .card-arrow svg {
+            stroke: var(--uat);
         }
 
         #timestamp {
@@ -384,6 +410,25 @@
             <div class="card-desc">Production-environment surveys. Forms opened here are live. Handle with care.</div>
             <div class="card-footer">
                 <span class="card-meta">795-live-tests.html</span>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </div>
+        </a>
+
+        <a href="uat-orca-surveys.html" class="tool-card uat-card">
+            <div class="card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                </div>
+                <span class="status-badge status-uat">UAT</span>
+            </div>
+            <div class="card-title">ORCA UAT Surveys</div>
+            <div class="card-desc">UAT survey forms for ORCA — Save and Exit and Always-On. Test environment, responses are not visible to end users.</div>
+            <div class="card-footer">
+                <span class="card-meta">uat-orca-surveys.html</span>
                 <div class="card-arrow">
                     <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </div>
